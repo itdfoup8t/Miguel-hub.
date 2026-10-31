@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miguel Hub</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #100b16;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 20px;
+}
+h1 { color: #ff7518; }
+.panel {
+  max-width: 420px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #21152e;
+  border: 1px solid #ff7518;
+  border-radius: 16px;
+}
+button {
+  background: #ff7518;
+  color: white;
+  border: 0;
+  padding: 12px;
+  margin: 5px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+.location {
+  background: #332342;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  text-align: left;
+}
+.done { opacity: .5; }
+small { color: #c9b8d8; }
+</style>
+</head>
+<body>
+
+<h1>🎃 MIGUEL HUB</h1>
+<p>👻 PUMPKIN LOCATOR</p>
+
+<div class="panel">
+<h2>🎃 Caçador de abóboras</h2>
+<h1 id="count">0 / 5</h1>
+<small>Abóboras marcadas como encontradas</small>
+</div>
+
+<div class="panel">
+<h2>📍 Lista de procura</h2>
+<div id="locations"></div>
+<button onclick="resetAll()">🔄 Reiniciar lista</button>
+</div>
+
+<div class="panel">
+<h3>🗺️ Mapa de procura</h3>
+<p>Use os locais abaixo como anotações pessoais.</p>
+<small>Mapa ilustrativo: não mostra posições reais do jogo.</small>
+</div>
+
+<script>
+const places = [
+"Local 1 - Ilha",
+"Local 2 - Vila",
+"Local 3 - Castelo",
+"Local 4 - Floresta",
+"Local 5 - Praia"
+];
+
+let found = [];
+
+function render() {
+  const list = document.getElementById("locations");
+  list.innerHTML = "";
+
+  places.forEach((place, i) => {
+    const done = found.includes(i);
+    const item = document.createElement("div");
+    item.className = "location" + (done ? " done" : "");
+
+    const name = document.createElement("span");
+    name.textContent = (done ? "✅ " : "🎃 ") + place;
+
+    const button = document.createElement("button");
+    button.textContent = done ? "Desmarcar" : "Encontrada";
+    button.onclick = () => {
+      found = done
+        ? found.filter(x => x !== i)
+        : [...found, i];
+      render();
+    };
+
+    item.append(name, button);
+    list.appendChild(item);
+  });
+
+  document.getElementById("count").textContent =
+    found.length + " / " + places.length;
+}
+
+function resetAll() {
+  found = [];
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
